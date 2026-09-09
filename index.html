@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Spec Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eef0ee;
+    --paper-alt:#e1e6e1;
+    --ink:#12181a;
+    --ink-soft:#4b5858;
+    --line:#c3cbc4;
+    --accent:#ff5a1f;
+    --accent-ink:#8a2c00;
+    --accent-contrast:#fff7f2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#10151a;
+      --paper-alt:#171e24;
+      --ink:#e9edec;
+      --ink-soft:#9aa8a8;
+      --line:#2b3439;
+      --accent:#ff7a45;
+      --accent-ink:#ffc4a3;
+      --accent-contrast:#1a0f08;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#10151a;
+    --paper-alt:#171e24;
+    --ink:#e9edec;
+    --ink-soft:#9aa8a8;
+    --line:#2b3439;
+    --accent:#ff7a45;
+    --accent-ink:#ffc4a3;
+    --accent-contrast:#1a0f08;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    line-height:1.55;
+  }
+  img{ max-width:100%; }
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 24px 96px;
+  }
+  .mono{ font-family:'IBM Plex Mono','SFMono-Regular',Consolas,monospace; }
+  .display{
+    font-family:'Big Shoulders Display','Arial Narrow',sans-serif;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    text-wrap:balance;
+  }
+  a{ color:inherit; }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+
+  /* ---- doc header ---- */
+  .docbar{
+    border-bottom:1px solid var(--line);
+    padding:14px 24px;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+  }
+  .docbar span{ white-space:nowrap; }
+
+  header.hero{
+    padding:64px 0 40px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:56px;
+  }
+  .kicker{
+    font-size:0.78rem;
+    letter-spacing:0.16em;
+    color:var(--accent-ink);
+    margin:0 0 14px;
+  }
+  h1{
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    line-height:0.96;
+    margin:0 0 20px;
+  }
+  .dek{
+    max-width:62ch;
+    font-size:1.08rem;
+    color:var(--ink-soft);
+    margin:0;
+  }
+
+  section{ margin-bottom:64px; }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:10px;
+    margin-bottom:28px;
+  }
+  .section-head h2{
+    font-size:1.9rem;
+    margin:0;
+  }
+  .section-head .tag{
+    font-size:0.72rem;
+    letter-spacing:0.1em;
+    color:var(--ink-soft);
+  }
+  .intro{
+    max-width:68ch;
+    font-size:1.02rem;
+    color:var(--ink-soft);
+  }
+  .intro strong{ color:var(--ink); font-weight:600; }
+
+  /* ---- category grid ---- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media (max-width:720px){
+    .grid{ grid-template-columns:1fr; }
+  }
+  .card{
+    background:var(--paper);
+    padding:26px 26px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .card-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .card-head h3{
+    font-size:1.3rem;
+    margin:0;
+    font-weight:700;
+  }
+  .code{
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    padding:2px 7px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+  .specs{
+    list-style:none;
+    margin:0;
+    padding:0;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+  }
+  .specs li{
+    padding-left:16px;
+    position:relative;
+  }
+  .specs li::before{
+    content:"+";
+    position:absolute;
+    left:0;
+    color:var(--accent);
+    font-weight:600;
+  }
+  .tip{
+    font-size:0.92rem;
+    margin:0;
+  }
+  .tip b{
+    color:var(--accent-ink);
+    font-weight:600;
+  }
+  .card-meta{
+    display:flex;
+    justify-content:space-between;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    padding-top:10px;
+    border-top:1px dashed var(--line);
+  }
+  .cta{
+    margin-top:4px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    align-self:flex-start;
+    background:var(--accent);
+    color:var(--accent-contrast);
+    text-decoration:none;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.8rem;
+    font-weight:600;
+    letter-spacing:0.03em;
+    padding:9px 14px;
+    border-radius:3px;
+    transition:transform 0.12s ease;
+  }
+  .cta:hover{ transform:translateX(2px); }
+  @media (prefers-reduced-motion:reduce){
+    .cta{ transition:none; }
+    .cta:hover{ transform:none; }
+  }
+
+  /* ---- comparison table ---- */
+  .table-scroll{
+    overflow-x:auto;
+    border:1px solid var(--line);
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:640px;
+    font-size:0.88rem;
+  }
+  th, td{
+    text-align:left;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+  }
+  th{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    background:var(--paper-alt);
+  }
+  td.price{ font-family:'IBM Plex Mono',monospace; }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---- methodology ---- */
+  .method{
+    counter-reset:step;
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media (max-width:820px){
+    .method{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:480px){
+    .method{ grid-template-columns:1fr; }
+  }
+  .method li{
+    counter-increment:step;
+    background:var(--paper);
+    padding:22px;
+  }
+  .method li::before{
+    content:"0" counter(step);
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:var(--accent-ink);
+    margin-bottom:10px;
+  }
+  .method h4{
+    margin:0 0 8px;
+    font-size:1rem;
+  }
+  .method p{
+    margin:0;
+    font-size:0.86rem;
+    color:var(--ink-soft);
+  }
+
+  /* ---- disclosure ---- */
+  .disclosure{
+    border:1px solid var(--accent);
+    padding:22px 24px;
+    background:var(--paper-alt);
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .disclosure .mark{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    color:var(--accent-ink);
+    border:1px solid var(--accent);
+    padding:3px 8px;
+    white-space:nowrap;
+    margin-top:2px;
+  }
+  .disclosure p{
+    margin:0;
+    font-size:0.9rem;
+    color:var(--ink-soft);
+    max-width:64ch;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding-top:24px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    font-size:0.76rem;
+    color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<div class="docbar mono">
+  <span>THE SPEC SHEET</span>
+  <span>DOC NO. TSS-2026-09 · REV A</span>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="kicker mono">GADGET BUYING GUIDES — UPDATED QUARTERLY</p>
+    <h1 class="display">Read the spec<br>before the reviews.</h1>
+    <p class="dek">Six gadget categories, broken down to the numbers that actually separate a good unit from a bad one — battery math, port wattage, sensor size — so you can shop in ten minutes instead of forty tabs.</p>
+  </header>
+
+  <section aria-labelledby="cats-h">
+    <div class="section-head">
+      <h2 id="cats-h">Field-Tested Categories</h2>
+      <span class="tag mono">06 CATEGORIES</span>
+    </div>
+    <p class="intro">Each sheet lists the specs worth checking before checkout, plus <strong>one buying tip</strong> that isn't printed on the box. Tap through to compare current listings on Amazon.</p>
+
+    <div class="grid">
+
+      <article class="card">
+        <div class="card-head">
+          <h3>True Wireless Earbuds</h3>
+          <span class="code mono">TWS-01</span>
+        </div>
+        <ul class="specs mono">
+          <li>Bluetooth 5.3 or newer</li>
+          <li>Driver size, 8–11mm dynamic</li>
+          <li>IPX4+ sweat rating</li>
+          <li>Case battery ≥ 400mAh</li>
+        </ul>
+        <p class="tip">Buying tip: <b>multipoint pairing</b> matters more than ANC depth if you switch between phone and laptop all day.</p>
+        <div class="card-meta">
+          <span>$30–$220</span>
+          <span>Best for commuters, calls</span>
+        </div>
+        <a class="cta" href="https://www.amazon.com/s?k=true+wireless+earbuds" target="_blank" rel="noopener sponsored">BROWSE LISTINGS →</a>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h3>GaN Fast Chargers</h3>
+          <span class="code mono">PWR-02</span>
+        </div>
+        <ul class="specs mono">
+          <li>Total output, watts (W)</li>
+          <li>GaN vs. silicon build</li>
+          <li>Port count &amp; PD version</li>
+          <li>Foldable prong housing</li>
+        </ul>
+        <p class="tip">Buying tip: size the charger to your <b>heaviest device</b> — usually a laptop — not your phone's smaller draw.</p>
+        <div class="card-meta">
+          <span>$18–$65</span>
+          <span>Best for travel, desk clutter</span>
+        </div>
+        <a class="cta" href="https://www.amazon.com/s?k=gan+fast+charger" target="_blank" rel="noopener sponsored">BROWSE LISTINGS →</a>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h3>Mechanical Keyboards</h3>
+          <span class="code mono">KEY-03</span>
+        </div>
+        <ul class="specs mono">
+          <li>Switch type: linear/tactile/clicky</li>
+          <li>Hot-swap socket support</li>
+          <li>Polling rate (Hz)</li>
+          <li>Layout: full / TKL / 60%</li>
+        </ul>
+        <p class="tip">Buying tip: order a <b>switch tester</b> before committing — feel varies more than any spec sheet shows.</p>
+        <div class="card-meta">
+          <span>$45–$260</span>
+          <span>Best for typing feel, gaming</span>
+        </div>
+        <a class="cta" href="https://www.amazon.com/s?k=mechanical+keyboard" target="_blank" rel="noopener sponsored">BROWSE LISTINGS →</a>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h3>Portable SSDs</h3>
+          <span class="code mono">STG-04</span>
+        </div>
+        <ul class="specs mono">
+          <li>Read/write speed (MB/s)</li>
+          <li>Interface: USB 3.2 Gen2 / TB</li>
+          <li>IP rating, if any</li>
+          <li>Capacity (TB)</li>
+        </ul>
+        <p class="tip">Buying tip: check the <b>sustained</b> transfer speed, not the peak burst number on the box.</p>
+        <div class="card-meta">
+          <span>$50–$180</span>
+          <span>Best for editors, backups</span>
+        </div>
+        <a class="cta" href="https://www.amazon.com/s?k=portable+ssd" target="_blank" rel="noopener sponsored">BROWSE LISTINGS →</a>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h3>Smart Plugs &amp; Switches</h3>
+          <span class="code mono">HOME-05</span>
+        </div>
+        <ul class="specs mono">
+          <li>Hub-free vs. hub-required</li>
+          <li>Matter / Thread support</li>
+          <li>Energy monitoring</li>
+          <li>Max load (A)</li>
+        </ul>
+        <p class="tip">Buying tip: confirm <b>voice assistant support</b> before buying a multipack — returns are a hassle.</p>
+        <div class="card-meta">
+          <span>$8–$30</span>
+          <span>Best for automation starters</span>
+        </div>
+        <a class="cta" href="https://www.amazon.com/s?k=smart+plug" target="_blank" rel="noopener sponsored">BROWSE LISTINGS →</a>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h3>Action Cameras</h3>
+          <span class="code mono">CAM-06</span>
+        </div>
+        <ul class="specs mono">
+          <li>Sensor size</li>
+          <li>Stabilization type</li>
+          <li>Max resolution / fps</li>
+          <li>Waterproof depth (m)</li>
+        </ul>
+        <p class="tip">Buying tip: battery drains fast at <b>4K/60</b> — carry a spare for a full day of shooting.</p>
+        <div class="card-meta">
+          <span>$120–$450</span>
+          <span>Best for sports, travel</span>
+        </div>
+        <a class="cta" href="https://www.amazon.com/s?k=action+camera" target="_blank" rel="noopener sponsored">BROWSE LISTINGS →</a>
+      </article>
+
+    </div>
+  </section>
+
+  <section aria-labelledby="compare-h">
+    <div class="section-head">
+      <h2 id="compare-h">Quick Compare</h2>
+      <span class="tag mono">AT A GLANCE</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Price Range</th>
+            <th>Key Spec To Check</th>
+            <th>Best For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>True Wireless Earbuds</td><td class="price">$30–$220</td><td>Multipoint pairing</td><td>Commuters, calls</td></tr>
+          <tr><td>GaN Fast Chargers</td><td class="price">$18–$65</td><td>Total wattage vs. device</td><td>Travel, desk clutter</td></tr>
+          <tr><td>Mechanical Keyboards</td><td class="price">$45–$260</td><td>Switch type</td><td>Typing feel, gaming</td></tr>
+          <tr><td>Portable SSDs</td><td class="price">$50–$180</td><td>Sustained MB/s</td><td>Editors, backups</td></tr>
+          <tr><td>Smart Plugs &amp; Switches</td><td class="price">$8–$30</td><td>Hub-free support</td><td>Automation starters</td></tr>
+          <tr><td>Action Cameras</td><td class="price">$120–$450</td><td>Stabilization type</td><td>Sports, travel</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="method-h">
+    <div class="section-head">
+      <h2 id="method-h">How Picks Are Made</h2>
+      <span class="tag mono">METHODOLOGY</span>
+    </div>
+    <ol class="method">
+      <li>
+        <h4>Scope the use case</h4>
+        <p>Define who the category is actually for before touching a single listing.</p>
+      </li>
+      <li>
+        <h4>Set a spec floor</h4>
+        <p>Decide the minimum numbers that separate a decent unit from a bad one.</p>
+      </li>
+      <li>
+        <h4>Cross-check reviews</h4>
+        <p>Weigh verified buyer feedback and return-rate signals, not star averages alone.</p>
+      </li>
+      <li>
+        <h4>Publish the plain tip</h4>
+        <p>One sentence you can act on — sheets get revised as models change.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="disc-h">
+    <h2 id="disc-h" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Affiliate Disclosure</h2>
+    <div class="disclosure">
+      <span class="mark">DISCLOSURE</span>
+      <p>The Spec Sheet is a participant in the Amazon Associates program. As an Amazon Associate, we earn from qualifying purchases. When you buy through a link on this page, we may earn a small commission at no extra cost to you — it never changes which products we recommend.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 The Spec Sheet</span>
+    <span>Prices and specs change — verify current listings before buying.</span>
+  </footer>
+
+</div>
+</body>
+</html>
